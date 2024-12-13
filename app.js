@@ -1,4 +1,6 @@
 // Load environment variables from .env file
+// npm install connect-redis redis express-session dotenv axios
+
 require('dotenv').config();
 const express = require('express');
 const axios = require('axios');
@@ -37,7 +39,7 @@ redisClient.on('error', (err) => {
 // Set up session middleware
 app.use(
     session({
-        store: new RedisStore({ client: redisClient }), // Use `new` with RedisStore
+        store: RedisStore.create({ client: redisClient }), // Use `.create()` method
         secret: process.env.SESSION_SECRET || 'your_secret_key',
         resave: false,
         saveUninitialized: false,
