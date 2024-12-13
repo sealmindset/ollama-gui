@@ -5,7 +5,7 @@ const axios = require('axios');
 const redis = require('redis');
 const bodyParser = require('body-parser');
 const session = require('express-session');
-const RedisStore = require('connect-redis');
+const RedisStore = require('connect-redis').default; // Correct import
 const path = require('path');
 
 const app = express();
@@ -37,7 +37,7 @@ redisClient.on('error', (err) => {
 // Set up session middleware
 app.use(
     session({
-        store: RedisStore({ client: redisClient }), // Use Redis as session store
+        store: new RedisStore({ client: redisClient }), // Use `new` with RedisStore
         secret: process.env.SESSION_SECRET || 'your_secret_key',
         resave: false,
         saveUninitialized: false,
